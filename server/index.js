@@ -19,14 +19,20 @@ app.get("/", (req, res) => {
 });
 
 /**
- * @type {{socketID: string, peerID: string}[]}
+ * @type {{socketID: string, peerID: string, userID: string}[]}
  */
 let peers = [
 	// {
 	// 	peerID: "",
-	// 	socketID: ""
+	// 	socketID: "",
+	// 	userID: ""
 	// }
 ];
+
+// get a list of all peers available
+app.get("/all", (req, res) => {
+	res.send(peers);
+})
 
 io.on('connection', (socket) => {
 	console.log(`EVENT: A user connected`);
@@ -34,14 +40,14 @@ io.on('connection', (socket) => {
 
 	// allocate a new peer id
 	// peer should call emit a ready event
-	socket.on('ready', (callback) => {
-		const peerID = uuid();
+	socket.on('ready', (peerID, callback) => {
 		const socketID = socket.id;
 
 		if (peers.includes({peerID: peerID})) {
 			// safety
 			socket.disconnect(true);
 		};
+
 
 
 
@@ -55,6 +61,17 @@ io.on('connection', (socket) => {
 		console.log("after callback");
 		console.log(peers);
 	});
+
+	socket.on("message", (message, targetPeer) => {
+		if (targetPeer) {
+			// retrieve the target peer from peer list
+			const recepient = peers.find((_pr) => _pr.peerID === targetPeer);
+
+			if (recepient) {
+				io.to(recepient.socketID).emit("message", message);
+			}
+		}
+	})
 
 	socket.on('disconnect', () => {
 		console.log(`EVENT: A user disconnected!! socketID: ${socket.id}`);

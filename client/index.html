@@ -6,32 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WebRTC Demo</title>
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" defer></script>
-	<script type="module" src="./counter.js" defer></script>
+	  <script type="module" src="./counter.js" defer></script>
   </head>
   <body>
     <h2>1. Start your Webcam</h2>
+    <p id="peer-id-display"></p>
     <div class="videos">
       <span>
         <h3>Local Stream</h3>
-        <video id="webcamVideo" autoplay playsinline></video>
+        <video id="local-video-stream" autoplay playsinline></video>
       </span>
       <span>
         <h3>Remote Stream</h3>
-        <video id="remoteVideo" autoplay playsinline></video>
+        <video id="remote-video-stream" autoplay playsinline></video>
       </span>
 
 
     </div>
 
-    <button id="webcamButton">Start webcam</button>
-    <h2>2. Create a new Call</h2>
+    <button id="webcam-btn">Start webcam</button>
+
+    <h2>Enter peer ID</h2>
+    <input type="text" id="peer-id" placeholder="peer id" disabled />
+    <button id="call-btn">Call peer</button>
+    <!-- <h2>2. Create a new Call</h2>
     <button id="callButton" disabled>Create Call (offer)</button>
 
     <h2>3. Join a Call</h2>
     <p>Answer the call from a different browser window or device</p>
     
     <input id="callInput" />
-    <button id="answerButton" disabled>Answer</button>
+    <button id="answerButton" disabled>Answer</button> -->
+
+    <h2>Answer</h2>
+    <button id="answer-btn" disabled>Answer</button>
+    <input id="caller-id" disabled />
 
     <h2>4. Hangup</h2>
 
